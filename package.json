@@ -1,0 +1,20 @@
+{
+  "name": "isd_unicam",
+  "version": "1.0.0",
+  "description": "A fastly built prototype to show some core functionalities of the server",
+  "main": "listener.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sulimovskyy Vladyslav",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.6",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "serialize-error": "^2.1.0"
+  }
+}
