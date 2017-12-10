@@ -4,20 +4,8 @@ var Schema = mongoose.Schema;
 var repo = new Schema({
     "category": {
         "type": String,
-        "enum": ["Hi", "Here", "Are", "Some", "Examples", "uncategorized"],
+        "enum": { "values": "Hi Here Are Some Examples uncategorized".split(" "), "message": "Unfortunatly the value you sent us is not a valid category." },
         "required": false,
-        "validate": {
-            isAsync: true,
-            validator: function (v, cb) {
-                setTimeout(function () {
-                    // First argument is a boolean, whether validator succeeded
-                    // 2nd argument is an optional error message override
-                    cb(["Hi", "Here", "Are", "Some", "Examples", "uncategorized"].indexOf(v) != -1, v + " is not a valid category.");
-                }, 5);
-            },
-            // Default error message, overridden by 2nd argument to `cb()` above
-            message: "Should not see this."
-        },
         "default": "uncategorized"
     },
     "description": {
@@ -27,11 +15,38 @@ var repo = new Schema({
     "location": {
         "lat": {
             "type": Number,
-            "required": [true, "We could realy use your information in orded to provide the best service possible."]
+            "required": [true, "We really need to access your location in order to provide the best service."],
+            "validate": {
+                "isAsync": true,
+                "validator": function (v, cb) {
+                    setTimeout(function () {
+                        if (v < -90 || v > 90) {
+                            cb(false, v + " is not a valid latitude value.");
+                        } else {
+                            //v = Number(v);
+                            cb(true, v + " is a valid latitude value. But you should not be able to see this.");
+                        }
+                    }, 5);
+                },
+                "message": "Should not see this."
+            },
         },
         "long": {
             "type": Number,
-            "required": [true, "We could realy use your information in orded to provide the best service possible."]
+            "required": [true, "We really need to access your location in order to provide the best service."],
+            "validate": {
+                "isAsync": true,
+                "validator": function (v, cb) {
+                    setTimeout(function () {
+                        if (v < -180 || v > 180) {
+                            cb(false, v + " is not a valid longitude value.");
+                        } else {
+                            cb(true, v + " is a valid longitude value. But you should not be able to see this.");
+                        }
+                    }, 5);
+                },
+                "message": "Should not see this."
+            },
         }
     },
     "pathToPhoto": {
