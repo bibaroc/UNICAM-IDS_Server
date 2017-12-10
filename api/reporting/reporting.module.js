@@ -45,7 +45,7 @@ var repo = new Schema({
 });
 //TODO: any complex validation goes in here.
 repo.pre("save", function (next) {
-    if (require("./config").env === "dev") {
+    if (require("../../config/env.config").env === "dev") {
         next();
     } else {
         next();
