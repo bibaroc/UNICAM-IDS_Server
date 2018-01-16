@@ -22,7 +22,8 @@ exports.post = function (req, res) {
                 "lat": req.body.lat,
                 "long": req.body.long
             },
-            "category": req.body.category
+            "category": req.body.category,
+            "status": "DaAnalizzare"
         }))
             .save(function (error) {
                 if (error) {
@@ -55,7 +56,7 @@ exports.getByID = function (req, res) {
     console.log(req.params.id);
     //req.params.id is valid
     Reporting.findById(req.params.id)
-        .select("pathToPhoto description date")
+        .select("pathToPhoto description status date")
         .exec(function (errorLookingUpDB, result) {
             if (errorLookingUpDB) {
                 return res.status(500).send({
@@ -71,6 +72,27 @@ exports.getByID = function (req, res) {
             }
         });
 
+};
+
+exports.deleteByID = function (req, res) {
+    Reporting.update({
+        "_id": req.params.id
+    }, {
+            "status": "Rifiutata"
+        })
+        .exec(function (err) {
+            if (err) {
+                return res.status(500).send({
+                    "success": false,
+                    "msg": "Unfortunatly something went wrong while updating the database."
+                });
+            } else {
+                return res.status(200).send({
+                    "success": true,
+                    "msg": "Here you are little boy, the database was updated."
+                });
+            }
+        });
 };
 
 exports.unimplemented = function (req, res) {

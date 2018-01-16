@@ -8,6 +8,12 @@ var repo = new Schema({
         "required": false,
         "default": "uncategorized"
     },
+    "status": {
+        "type": String,
+        "enum": { "values": "PresaInCarico InElaborazione Rifiutata DaAnalizzare".split(" "), "message": "Unfortunatly the value to be set is not a valid status." },
+        "required": false,
+        "default": "DaAnalizzare"
+    },
     "description": {
         "type": String,
         "required": [true, "Can you please add a description?"]
