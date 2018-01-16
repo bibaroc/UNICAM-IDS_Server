@@ -49,11 +49,46 @@ exports.post = function (req, res) {
                 }
             });
     }
-}
+};
 
+exports.getByID = function (req, res) {
+    console.log(req.params.id);
+    //There are no parameters, or no id, or id doesent match regex rules
+    if (!req.params || !req.params.id) {
+        return res.status(400).send({
+            "success": false,
+            "msg": "We are not able to understand you request, sorry we are trying very hard."
+        });
+    } else {
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).send({
+                "success": false,
+                "msg": "Unfortunately " + id + " is not valid."
+            });
+        } else {
+            //req.params.id is valid
+            Reporting.findById(req.params.id)
+                .select("pathToPhoto description date")
+                .exec(function (errorLookingUpDB, result) {
+                    if (errorLookingUpDB) {
+                        return res.status(500).send({
+                            "success": false,
+                            "msg": "Something went terribly wrong during DB lookup."
+                        });
+                    } else {
+                        return res.status(result ? 200 : 404).send({
+                            "success": true,
+                            "msg": result ? "Here you are." : "There is no item matching search criteria.",
+                            "data": result
+                        });
+                    }
+                });
+        }
+    }
+};
 
 exports.unimplemented = function (req, res) {
-    return res.status(200).send({
+    return res.status(501).send({
         "success": false,
         "msg": "The service requested is not implemented."
     });
