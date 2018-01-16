@@ -88,7 +88,7 @@ exports.getByID = function (req, res) {
 };
 
 exports.unimplemented = function (req, res) {
-    return res.status(200).send({
+    return res.status(501).send({
         "success": false,
         "msg": "The service requested is not implemented."
     });
