@@ -1,9 +1,10 @@
 "use strict";
 
 var Reporting = require("./reporting.module");
+var Location = require("./location.module");
 
 exports.post = function (req, res) {
-    if (!req.body || !req.body.description || !req.body.lat || !req.body.long || !req.body.category) {
+    if (!req.body || !req.body.description || !req.body.lat || !req.body.long) {
         return res.status(400).send({
             "success": false,
             "msg": "We were not able to decode the information sent to us."
@@ -15,40 +16,88 @@ exports.post = function (req, res) {
         });
     } else {
         //I know the information i need is present in the body
-        (new Reporting({
+        var errorBueffer = "";
+        var loc = new Location({
+            "lat": parseFloat(req.body.lat),
+            "long": parseFloat(req.body.long),
+            "address": req.body.address ? req.body.address : "The address was not set.",
+            "phoneNumber": req.body.phoneNumber ? req.body.phoneNumber : 9999999999
+        })
+
+        var rep = new Reporting({
             "description": req.body.description,
             "pathToPhoto": "junkValue",
-            "location": {
-                "lat": req.body.lat,
-                "long": req.body.long
-            },
-            "category": req.body.category,
-            "status": "DaAnalizzare"
-        }))
-            .save(function (error) {
-                if (error) {
-                    console.log("An error while saving the user: ");
+            "category": req.body.category ? req.body.category : "uncategorized",
+            "status": "DaAnalizzare",
+            "location": loc,
+        });
+
+        loc.save(function (errorSavingLocation) {
+            //If there is an error savig the location
+            if (errorSavingLocation) {
+                console.log(errorSavingLocation.message);
+                //If it is a validation error
+                if (errorSavingLocation.name == 'ValidationError') {
                     var msg = "unititialized";
-                    if (error.name == 'ValidationError') {
-                        for (var field in error.errors) {
-                            console.log(error.errors[field].message);
-                            //I will only send one error at a time.
-                            if (msg = "unititialized")
-                                msg = error.errors[field].message;
-                        }
+                    for (var field in errorSavingLocation.errors) {
+                        //I will only send one error at a time.
+                        if (msg = "unititialized")
+                            msg = errorSavingLocation.errors[field].message;
                     }
                     return res.status(400).send({
                         "success": false,
                         "msg": msg
                     });
-                }
-                else {
-                    return res.status(200).send({
+                } else {
+                    return res.status(500).send({
                         "success": false,
-                        "msg": "Your reporting is saved and will be processed soonish."
+                        "msg": "Internal server error."
                     });
                 }
-            });
+            } else {
+                //There is no error while saving the location.
+                rep.save(function (errorSavingReporting) {
+                    if (errorSavingReporting) {
+                        console.log(errorSavingReporting.message);
+                        //If there is an error i dont wont dangling documents.
+                        Location
+                            .remove({ "_id": loc._id })
+                            .exec(function (error) {
+                                if (error) {
+                                    console.log(error);
+                                }
+                                if (errorSavingReporting.name == "ValidationError") {
+                                    var msg = "unititialized";
+                                    for (var field in errorSavingReporting.errors) {
+                                        //I will only send one error at a time.
+                                        if (msg = "unititialized")
+                                            msg = errorSavingReporting.errors[field].message;
+                                    }
+                                    return res.status(400).send({
+                                        "success": false,
+                                        "msg": msg
+                                    });
+                                } else {
+                                    return res.status(400).send({
+                                        "success": false,
+                                        "msg": errorSavingLocation.message
+                                    });
+                                }
+                            });
+                        //If there is an error i dont wont dangling documents.
+                        // loc.remove(function(e))
+                    } else {
+                        //Everything is alright
+                        return res.status(201).send({
+                            "success": true,
+                            "msg": "Report added successfuly."
+                        });
+                    }
+
+                });
+            }
+
+        });
     }
 };
 
@@ -56,7 +105,12 @@ exports.getByID = function (req, res) {
     console.log(req.params.id);
     //req.params.id is valid
     Reporting.findById(req.params.id)
-        .select("pathToPhoto description status date")
+        .populate({
+            "path": "location",
+            "select": "-_id -__v"
+        })
+        // .select("pathToPhoto description status date")
+        .select("-_id -__v")
         .exec(function (errorLookingUpDB, result) {
             if (errorLookingUpDB) {
                 return res.status(500).send({
