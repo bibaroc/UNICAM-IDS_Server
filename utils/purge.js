@@ -1,8 +1,3 @@
-//   /(^[a-zA-Z0-9.,!?]*)$/.test('.,.!!??,.');
-//  "hbfsjbfhsdj%$$fhmvsbdfjhvb".replace(new RegExp("([^a-zA-Z0-9.,!?]+)", 'g'), "");   questa funzione diocane
-//   
-
-
 (function () {
     "use strict";
     var dictionary_RegEx = /[äàöòèéüìÄÀÖÒÈÉÜÌ]/g;
@@ -23,13 +18,11 @@
     };
 
     var parseBody = function (req, res, next) {
-        console.log("prima : "+JSON.stringify(req.body));
         var requestBody = req.body;
         for (var key in requestBody) {
             requestBody[key] = replaceInvalidCharacters(requestBody[key]);
             requestBody[key] = requestBody[key].replace(charsToPurge, "");
         }
-        console.log("dopo : "+JSON.stringify(req.body));
         next();
     };
 
