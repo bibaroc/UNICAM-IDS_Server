@@ -8,20 +8,17 @@ var location = new Schema({
         "default": "The address was not set."
     },
     "phoneNumber": {
-        "type": Number,
+        "type": String,
         "required": false,
-        "default": 3474803961,
+        "default": "Phone number not set.",
         "validate": {
             "isAsync": true,
             "validator": function (v, cb) {
                 setTimeout(function () {
-                    var str = v.toString();
-                    if (isNaN(v)) {
+                    if (v==="Phone number not set.") {
                         cb(true, "The phone number wasn't set, however you should not be able to see this.");
-                    } else if (str.length != 10) {
-                        cb(false, v + " is not a valid phone number. The length doesn't seem right.");
-                    } else if (str.includes(".") || str.includes(",")) {
-                        cb(false, v + " is not a valid phone number. You are not allowed to have comas or dots in a phone number, are you?");
+                    } else if (!/([0-9]{10})$/.test(v)) {
+                        cb(false, v + " is not a valid phone number.");
                     } else {
                         cb(true, v + " is a valid phone number. But you should not be able to see this.");
                     }

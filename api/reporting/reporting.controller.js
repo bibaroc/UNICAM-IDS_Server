@@ -16,12 +16,11 @@ exports.post = function (req, res) {
         });
     } else {
         //I know the information i need is present in the body
-        var errorBueffer = "";
         var loc = new Location({
             "lat": parseFloat(req.body.lat),
             "long": parseFloat(req.body.long),
             "address": req.body.address ? req.body.address : "The address was not set.",
-            "phoneNumber": req.body.phoneNumber ? req.body.phoneNumber : 9999999999
+            "phoneNumber": req.body.phoneNumber ? req.body.phoneNumber : "Phone number not set."
         })
 
         var rep = new Reporting({
