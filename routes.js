@@ -1,6 +1,7 @@
 "use strict";
-
+let express = require("express");
 //Various routes configuration
 module.exports = function(application){
+    application.use(express.static("public"));
     application.use("/api/reporting", require("./api/reporting/reporting.index"));
 };
