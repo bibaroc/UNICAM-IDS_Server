@@ -1,0 +1,32 @@
+
+        <div class="table-responsive" style="height: 800px;" ng-controller="segnalazioniCtrl">
+            <div style="display: inline;margin-right: 20px;margin-left: 20px;">CERCA</div>
+            <input type="text" ng-model="search.id" placeholder="id">
+            
+            
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="margin-top: 10px;">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Nome Utente</th>
+                    <th>Info</th>
+                    <th>Assegna</th>
+                    <th>Elimina</th>
+                  </tr>
+                </thead>
+               
+                <tbody>
+                    <tr ng-repeat="temp in data | filter:search">
+                    <td>{{temp.id}}</td>
+                    <td>{{temp.data}}</td>
+                    <td>{{temp.nome_Utente}}</td>
+                    <td>{{temp.info}}</td>
+                    <td><a class="btn btn-primary" href="#!/login">ASSEGNA</a></td>
+                    <td><a class="btn btn-primary" href="#!/login">ELIMINA</a></td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+        

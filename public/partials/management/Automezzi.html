@@ -1,0 +1,32 @@
+
+        <div class="table-responsive" style="height: 800px;" ng-controller="automezziCtrl">
+            <div style="display: inline;margin-right: 20px;margin-left: 20px;">CERCA</div>
+            <input type="text" ng-model="search.targa" placeholder="Targa">
+           
+            
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="margin-top: 10px;">
+                <thead>
+                  <tr>
+                    <th>Targa</th>
+                    <th>Posti</th>
+                    <th>Disponibile</th>
+                    <th>Capacità</th>
+                    <th>Modifica</th>
+                    <th>Rimuovi</th>
+                  </tr>
+                </thead>
+               
+                <tbody>
+                    <tr ng-repeat="temp in data | filter:search">
+                    <td>{{temp.targa}}</td>
+                    <td>{{temp.posti}}</td>
+                    <td>{{temp.disponibile}}</td>
+                    <td>{{temp.capacita}}</td>
+                    <td><a class="btn btn-primary" href="#!/login">Modifica</a></td>
+                    <td><a class="btn btn-primary" href="#!/login">Rimuovi</a></td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+        
