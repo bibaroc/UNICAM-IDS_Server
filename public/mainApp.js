@@ -58,6 +58,13 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
         { id: "01293", data: "Pronte", nome_Utente: "pozzi", info: "si" },
         { id: "01283", data: "Pronte", nome_Utente: "pozzi", info: "si" },
     ];
+    $http.get("/api/reporting/")
+        .then(
+            //Questa viene runnata, se ti rispondo con codici da 100 a 499
+            (data) => { console.log(JSON.stringify(data.data)) },
+            //Questa viene runnato con 500
+            (data) => { }
+        );
 
 });
 //CONTROLLER SEGNALAZIONI

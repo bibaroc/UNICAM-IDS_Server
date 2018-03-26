@@ -19,7 +19,6 @@ var repo = new Schema({
         "type": String,
         "required": [true, "Can you please add a description?"]
     },
-
     "pathToPhoto": {
         "type": String,
         "required": [true, "Could you please send us a photo of the reporting?"]
