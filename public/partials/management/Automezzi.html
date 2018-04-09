@@ -23,10 +23,28 @@
                     <td>{{temp.disponibile}}</td>
                     <td>{{temp.capacita}}</td>
                     <td><a class="btn btn-primary" href="#!/login">Modifica</a></td>
-                    <td><a class="btn btn-primary" href="#!/login">Rimuovi</a></td>
+                    <td><a class="btn btn-primary" data-toggle="modal" data-target="#rimuoviMezzo">Rimuovi</a></td>
                   </tr>
                  
                 </tbody>
               </table>
             </div>
         
+
+            <div class="modal fade" id="rimuoviMezzo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sicuro dell'operazione scelta?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">Se scegli di procedere il mezzo sarà eliminato.</div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
+                    <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+                  </div>
+                </div>
+              </div>
+            </div>

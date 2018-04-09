@@ -22,11 +22,48 @@
                       <td>{{temp.cognome}}</td>
                       <td>{{temp.indirizzo}}</td>
                       <td>{{temp.abilitato}}</td>
-                      <td><a class="btn btn-primary" href="#!/login">BLOCCA/SBLOCCA</a></td>
-                      <td><a class="btn btn-primary" href="#!/login">PROMUOVI AD OPERATORE</a></td>
+                      <td><a class="btn btn-primary"  data-toggle="modal" data-target="#exampleModals">BLOCCA/SBLOCCA</a></td>
+                      <td><a class="btn btn-primary" data-toggle="modal" data-target="#exampleModalsx">PROMUOVI AD OPERATORE</a></td>
                     </tr>
               </tbody>
             </table>
           </div>
-       
     
+    
+    
+    
+          <div class="modal fade" id="exampleModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Sicuro dell'operazione scelta?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">Se scegli di procedere l'utente scelto sarà sboccato oppure bloccato.</div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
+                  <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="exampleModalsx" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Sicuro dell'operazione scelta?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">Se scegli di procedere l'utente sarà promosso ad operatore ecologico!</div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
+                  <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+                </div>
+              </div>
+            </div>
+          </div>
+ 
