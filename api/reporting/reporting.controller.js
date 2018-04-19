@@ -27,7 +27,7 @@ exports.post = function (req, res) {
             "description": req.body.description,
             "pathToPhoto": "junkValue",
             "category": req.body.category ? req.body.category : "uncategorized",
-            "status": "DaAnalizzare",
+            "status": "Da_Analizzare",
             "location": loc,
         });
 
@@ -112,6 +112,7 @@ exports.getByID = function (req, res) {
         .select("-_id -__v")
         .exec(function (errorLookingUpDB, result) {
             if (errorLookingUpDB) {
+                console.log(errorLookingUpDB);
                 return res.status(500).send({
                     "success": false,
                     "msg": "Something went terribly wrong during DB lookup."
@@ -154,3 +155,34 @@ exports.unimplemented = function (req, res) {
         "msg": "The service requested is not implemented."
     });
 };
+
+
+exports.get_all = function (req, res) {
+    Reporting.
+        find().
+        //where("status").regex();
+        select("_id").
+        exec().
+        then(
+
+            (ok_array) => {
+                let a = "";
+                for (let i = 0; i < ok_array.length; i++)
+                    a += ok_array[i]._id + (i === ok_array.length - 1 ? "" : ", ");
+                return res.status(200).send({
+                    "success": true,
+                    "msg": "Here you go, have your results.",
+                    "data": { "ids": a }
+                });
+            }
+
+        ).
+        catch(
+            (error) => {
+                return res.status(500).send({
+                    "success": false,
+                    "msg": "Unfortunatly something went wrong while looking up the database."
+                });
+            }
+        );
+}

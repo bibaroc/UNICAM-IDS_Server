@@ -2,7 +2,7 @@
   "name": "isd_unicam",
   "version": "1.0.0",
   "description": "A fastly built prototype to show some core functionalities of the server",
-  "main": "listener.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
