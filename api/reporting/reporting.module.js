@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Location = require("./location.module");
+var Location = require("../location.module");
 
 var repo = new Schema({
     "category": {

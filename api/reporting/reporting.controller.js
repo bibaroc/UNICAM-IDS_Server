@@ -1,7 +1,7 @@
 "use strict";
 
 var Reporting = require("./reporting.module");
-var Location = require("./location.module");
+var Location = require("../location.module");
 
 exports.post = function (req, res) {
     if (!req.body || !req.body.description || !req.body.lat || !req.body.long) {
@@ -48,6 +48,7 @@ exports.post = function (req, res) {
                         "msg": msg
                     });
                 } else {
+                    throw errorSavingLocation;
                     return res.status(500).send({
                         "success": false,
                         "msg": "Internal server error."
