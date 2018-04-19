@@ -11,7 +11,7 @@ var repo = new Schema({
     },
     "status": {
         "type": String,
-        "enum": { "values": "Da_Analizzare Rifiutata Accettata In_Corso Completata ".split(" "), "message": "Unfortunatly the value to be set is not a valid status." },
+        "enum": { "values": "Da_Analizzare Rifiutata Accettata In_Corso Completata".split(" "), "message": "Unfortunatly the value to be set is not a valid status." },
         "required": false,
         "default": "DaAnalizzare"
     },

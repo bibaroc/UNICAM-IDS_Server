@@ -7,7 +7,7 @@ var Purge = require("../../utils/purge");
 router.get("/", controller.get_all);
 router.get("/:id", Controll.isValidID, controller.getByID); //Get information about a reporting
 router.post("/", Purge.replace, controller.post); //Push a new reporting to the database
-router.put("/", controller.unimplemented);
+router.put("/:id", Controll.isValidID, controller.update_reporting);
 router.delete("/:id", Controll.isValidID, controller.deleteByID); //Delete a reporting previously added
 
 module.exports = router;

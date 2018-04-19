@@ -185,4 +185,34 @@ exports.get_all = function (req, res) {
                 });
             }
         );
-}
+};
+
+exports.update_reporting = function (req, res) {
+
+    if (!req.body || !req.body.status)
+        res.status(400).send({
+            "success": false,
+            "1msg": "Unfortunately we could not find understand your request"
+        });
+    else if (!Reporting.schema.paths.status.enumValues.includes(req.body.status)) {
+        res.status(400).send({
+            "success": false,
+            "1msg": "Unfortunately " + req.body.status + " is not a valid status"
+        });
+    } else {
+        Reporting.update({ "_id": req.params.id }, { "status": req.body.status }).
+            exec().
+            then(
+                () => { res.status(200).send({ "success": true, "msg": "ok" }); }
+            ).
+            catch(
+                (error) => {
+                    res.status(400).send({ "success": false, "msg": error.message });
+                }
+            );
+
+
+    }
+
+
+};
