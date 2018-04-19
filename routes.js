@@ -4,4 +4,5 @@ let express = require("express");
 module.exports = function(application){
     application.use(express.static("public"));
     application.use("/api/reporting", require("./api/reporting/reporting.index"));
+    application.use("/api/request", require("./api/request/request.index"));
 };

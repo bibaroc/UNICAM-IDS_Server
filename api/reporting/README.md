@@ -59,7 +59,10 @@ Good response:
 ```
 {
     "success": true,
-    "msg": "Report added successfuly."
+    "msg": "Report added successfuly.",
+    "data":{
+        "id": "5ad89d3a1f362d236888e7ad"
+    }
 }
 ```
 

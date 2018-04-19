@@ -4,15 +4,10 @@ var Reporting = require("./reporting.module");
 var Location = require("../location.module");
 
 exports.post = function (req, res) {
-    if (!req.body || !req.body.description || !req.body.lat || !req.body.long) {
+    if (!req.body.description) {
         return res.status(400).send({
             "success": false,
             "msg": "We were not able to decode the information sent to us."
-        });
-    } else if (isNaN(parseFloat(req.body.lat)) || isNaN(parseFloat(req.body.long))) {
-        return res.status(400).send({
-            "success": false,
-            "msg": "We were not able to read your information correctly. Could you please resend us the request?."
         });
     } else {
         //I know the information i need is present in the body
@@ -90,7 +85,8 @@ exports.post = function (req, res) {
                         //Everything is alright
                         return res.status(201).send({
                             "success": true,
-                            "msg": "Report added successfuly."
+                            "msg": "Report added successfuly.",
+                            "data": { "id": rep._id }
                         });
                     }
 
