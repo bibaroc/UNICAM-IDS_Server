@@ -1,5 +1,6 @@
 
         <div class="table-responsive" style="height: 800px;" ng-controller="richiesteCtrl">
+            <div style="display:table; margin: 0 auto;"><p>RICHIESTE</p></div>
             <div style="display: inline;margin-right: 20px;margin-left: 20px;">CERCA</div>
             <input type="text" ng-model="search.id" placeholder="id">
             
@@ -9,8 +10,8 @@
                   <tr>
                     <th>ID</th>
                     <th>Data</th>
-                    <th>Nome Utente</th>
-                    <th>Info</th>
+                    <th>Numero Telefonico</th>
+                    <th>Stato</th>
                     <th>Assegna</th>
                     <th>Elimina</th>
                   </tr>
@@ -20,10 +21,10 @@
                     <tr ng-repeat="temp in data | filter:search">
                     <td>{{temp.id}}</td>
                     <td>{{temp.data}}</td>
-                    <td>{{temp.nome_Utente}}</td>
-                    <td>{{temp.info}}</td>
+                    <td>{{temp.numero}}</td>
+                    <td>{{temp.status}}</td>
                     <td><a class="btn btn-primary" data-toggle="modal" data-target="#asseRichiesta">ASSEGNA</a></td>
-                    <td><a class="btn btn-primary"  data-toggle="modal" data-target="#rimuoviRichieste">ELIMINA</a></td>
+                    <td><a class="btn btn-primary"  data-toggle="modal" data-target="#rimuoviRichieste" ng-click="setEliminaRichiesta(temp.id)">ELIMINA</a></td>
                   </tr>
                  
                 </tbody>
@@ -43,7 +44,7 @@
                   <div class="modal-body">LA LISTA DEGLI OPERATORI CON LA RELATIVA CHECKBOX</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                    <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+                    <a class="btn btn-primary" >Procedi</a>
                   </div>
                 </div>
               </div>
@@ -61,7 +62,7 @@
                   <div class="modal-body">Se scegli di procedere la richiesta sarà eliminata.</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                    <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+                    <a class="btn btn-primary" ng-click="conferma()">Procedi</a>
                   </div>
                 </div>
               </div>

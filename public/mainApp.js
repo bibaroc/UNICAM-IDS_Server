@@ -18,9 +18,9 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when("/segnalazioni", { templateUrl: "/partials/management/Segnalazioni.html", controller: "segnalazioniCtrl" })
         .when("/utenti", { templateUrl: "/partials/management/Utenti.html", controller: "utentiCtrl" })
         .when("/storico", { templateUrl: "/partials/reports/Storico.html", controller: "storicoCtrl" })
-        
 
-      //  .otherwise("/404", { templateUrl: "partials/404.html", controller: "PageCtrl" });
+
+    //  .otherwise("/404", { templateUrl: "partials/404.html", controller: "PageCtrl" });
 }]);
 
 
@@ -50,22 +50,57 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
     ];
 
 });
+var ciccio = "ciao";
 //CONTROLLER RICHIESTE
 app.controller('richiesteCtrl', function ($scope, $location, $http) {
     $scope.search = {};
     $scope.data = [
 
-        { id: "09213", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
-        { id: "01293", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
-        { id: "01283", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
+        /* { id: "09213", data: "03/03/2018", immagine: "foto", cordinate: "NN", descrizione: "blabla" },
+         { id: "01293", data: "03/03/2018", immagine: "foto", cordinate: "NN", descrizione: "blabla" },
+         { id: "01283", data: "03/03/2018", immagine: "foto", cordinate: "NN", descrizione: "blabla" },*/
     ];
-    $http.get("/api/reporting/")
+    $http.get("/api/request/")
         .then(
             //Questa viene runnata, se ti rispondo con codici da 100 a 499
-            (data) => { console.log(JSON.stringify(data.data)) },
+            (response) => {
+
+                for (let i = 0; i < response.data.data.ids.length; i++) {
+                    $http.get("/api/request/" + response.data.data.ids[i]).then(
+                        (res) => {
+
+                            let time = new Date(res.data.data.date);
+                            $scope.data.push({
+
+                                id: response.data.data.ids[i],
+                                data: time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear(),
+                                numero: res.data.data.location.phoneNumber,
+                                status: res.data.data.status
+
+                            });
+                        },
+                        (res) => { }
+                    )
+                }
+
+            },
             //Questa viene runnato con 500
             (data) => { }
         );
+    
+    $scope.setEliminaRichiesta = (a) => {
+        console.log(a + " si elimina tale richiesta");
+        window.abcdef = a;
+    }
+    $scope.conferma = () => {
+        console.log(window.abcdef);
+        $http.delete("/api/request/"+window.abcdef);
+        window.abcdef = "";
+        location.reload();
+    }
+
+  
+   
 
 });
 //CONTROLLER SEGNALAZIONI
@@ -73,10 +108,39 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
     $scope.search = {};
     $scope.data = [
 
-        { id: "09123", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
+        /*{ id: "09123", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
         { id: "02923", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
-        { id: "02823", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },
+        { id: "02823", data: "03/03/2018", nome_Utente: "The_Cittadino", info: "NN" },*/
     ];
+
+    $http.get("/api/reporting/")
+        .then(
+            //Questa viene runnata, se ti rispondo con codici da 100 a 499
+            (response) => { //console.log(response.data.data.ids);
+
+                for (let i = 0; i < response.data.data.ids.length; i++) {
+                    $http.get("/api/reporting/" + response.data.data.ids[i]).then(
+                        (res) => {
+                            let time = new Date(res.data.data.date);
+                            $scope.data.push({
+
+                                id: response.data.data.ids[i],
+                                data: time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear(),
+                                immagine: res.data.data.pathToPhoto,
+                                cordinate: res.data.data.location.lat + " : " + res.data.data.location.long,
+                                descrizione: res.data.data.description,
+                                status: res.data.data.status
+
+                            });
+                        },
+                        (res) => { }
+                    )
+                }
+
+            },
+            //Questa viene runnato con 500
+            (data) => { }
+        );
 
 });
 //CONTROLLER UTENTI
@@ -84,9 +148,9 @@ app.controller('utentiCtrl', function ($scope, $location, $http) {
     $scope.search = {};
     $scope.data = [
 
-        { nome: "Rosario", cognome: "Culmone", indirizzo: "Ludovici", abilitato: "si" },
-        { nome: "Vladyslav", cognome: "Sulimovskyy", indirizzo: "WWW", abilitato: "no" },
-        { nome: "Marco", cognome: "Prontera", indirizzo: "Casa mia", abilitato: "si" }
+        { nome: "Mario", cognome: "Rossi", indirizzo: "Via Giorgio Fontini 2  FM", abilitato: "si" },
+        { nome: "Claudio", cognome: "Pozzetti", indirizzo: "Via Pietro Giuliazzi 3  AP", abilitato: "no" },
+        { nome: "Francesco", cognome: "Sghignozzi", indirizzo: "Via Patata Bollente 1  AP", abilitato: "si" }
 
     ];
 

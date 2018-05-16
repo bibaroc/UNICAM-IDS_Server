@@ -32,6 +32,11 @@ var repo = new Schema({
         "ref": "Location",
         "required": [true, "Please insent the location as it is necessry to the correct funtioning of the platform."]
     },
+    "vlad_index": {
+        "type": Number,
+        "required": true,
+        "unique": true
+    }
 });
 //TODO: any complex validation goes in here.
 repo.pre("save", function (next) {

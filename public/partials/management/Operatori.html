@@ -1,5 +1,6 @@
 
         <div class="table-responsive" style="height: 800px;" ng-controller="operatoriCtrl">
+            <div style="display:table; margin: 0 auto;"><p>OPERATORI</p></div>
             <div style="display: inline;margin-right: 20px;margin-left: 20px;">CERCA</div>
             <input type="text" ng-model="search.nome" placeholder="Nome">
             <input type="text" ng-model="search.cognome" placeholder="Cognome">
@@ -9,8 +10,6 @@
                   <tr>
                     <th>Nome</th>
                     <th>Cognome</th>
-                    <th>Indirizzo</th>
-                    <th>Data inizio</th>
                     <th>TaskAssegnati</th>
                     <th>Rimuovi operatore</th>
                   </tr>
@@ -20,8 +19,6 @@
                   <tr ng-repeat="temp in data | filter:search">
                       <td>{{temp.nome}}</td>
                       <td>{{temp.cognome}}</td>
-                      <td>{{temp.indirizzo}}</td>
-                      <td>{{temp.dataInizio}}</td>
                       <td>{{temp.taskAssegnati}}</td>
                     <td><a class="btn btn-primary" data-toggle="modal" data-target="#exampleModalsa">RIMUOVI OPERATORE</a></td>
                   </tr>

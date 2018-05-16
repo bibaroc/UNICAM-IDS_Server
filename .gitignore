@@ -60,3 +60,4 @@ typings/
 /.vs/VSWorkspaceState.json
 /.vs/slnx.sqlite
 /.vs/UNICAM-IDS_Server/v15/.suo
+config/database.config.js

@@ -5,8 +5,8 @@ var morgan = require("morgan");
 var compression = require("compression");
 //Configuration of various modules and express
 module.exports = function (app) {
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ "extended": true }));
+    app.use(bodyParser.json({"limit": "20mb" }));
+    app.use(bodyParser.urlencoded({"limit": "20mb", "extended": true }));
     app.use(compression());
     try {
         app.use(morgan(envConfig.logger));

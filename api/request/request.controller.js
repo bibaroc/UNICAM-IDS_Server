@@ -6,8 +6,8 @@ var Location = require("../location.module");
 exports.make_new = function (req, res) {
     //I know the information i need is present in the body
     var loc = new Location({
-        "lat": parseFloat(req.body.lat),
-        "long": parseFloat(req.body.long),
+        "lat": parseFloat(0),
+        "long": parseFloat(0),
         "address": req.body.address,
         "phoneNumber": req.body.phone
     })
@@ -15,7 +15,9 @@ exports.make_new = function (req, res) {
     var rep = new Request({
         "status": "Da_Analizzare",
         "location": loc,
-        "preferred_date": req.body.pref || Date.now() + (1000 * 60 * 60 * 24 * 2)
+        "preferred_date": req.body.pref || Date.now() + (1000 * 60 * 60 * 24 * 2),
+        "name": (req.body.name ? req.body.name : "") + " " + (req.body.last_name ? req.body.last_name : ""),
+        "vlad_index": 1 + max_index
     });
 
     loc.save(function (errorSavingLocation) {
@@ -42,9 +44,9 @@ exports.make_new = function (req, res) {
             }
         } else {
             //There is no error while saving the location.
-            rep.save(function (errorSavingReporting) {
-                if (errorSavingReporting) {
-                    console.log(errorSavingReporting.message);
+            rep.save(function (Request) {
+                if (Request) {
+                    console.log(Request.message);
                     //If there is an error i dont wont dangling documents.
                     Location
                         .remove({ "_id": loc._id })
@@ -52,12 +54,12 @@ exports.make_new = function (req, res) {
                             if (error) {
                                 console.log(error);
                             }
-                            if (errorSavingReporting.name == "ValidationError") {
+                            if (Request.name == "ValidationError") {
                                 var msg = "unititialized";
-                                for (var field in errorSavingReporting.errors) {
+                                for (var field in Request.errors) {
                                     //I will only send one error at a time.
                                     if (msg = "unititialized")
-                                        msg = errorSavingReporting.errors[field].message;
+                                        msg = Request.errors[field].message;
                                 }
                                 return res.status(400).send({
                                     "success": false,
@@ -72,10 +74,11 @@ exports.make_new = function (req, res) {
                         });
 
                 } else {
+                    max_index = max_index + 1;
                     return res.status(201).send({
                         "success": true,
                         "msg": "Report added successfuly.",
-                        "data": { "id": rep._id }
+                        "data": { "id": rep.vlad_index }
                     });
                 }
 
@@ -87,7 +90,7 @@ exports.make_new = function (req, res) {
 };
 
 exports.get_by_ID = function (req, res) {
-    Request.findById(req.params.id)
+    Request.findOne({ "vlad_index": req.params.id })
         .populate({
             "path": "location",
             "select": "-_id -__v"
@@ -111,8 +114,9 @@ exports.get_by_ID = function (req, res) {
 };
 
 exports.delete_by_id = function (req, res) {
-    Reporting.update({
-        "_id": req.params.id
+    Request.update({
+    
+        "vlad_index": req.params.id
     }, {
             "status": "Rifiutata"
         })
@@ -134,14 +138,15 @@ exports.delete_by_id = function (req, res) {
 exports.get_all = function (req, res) {
     Request.
         find().
-        select("_id").
+        where("status").regex(/[^(Rifiutata|Completata)]/igm).
+        select("vlad_index").
         exec().
         then(
 
             (ok_array) => {
-                let a = "";
+                let a = [];
                 for (let i = 0; i < ok_array.length; i++)
-                    a += ok_array[i]._id + (i === ok_array.length - 1 ? "" : ", ");
+                    a.push(ok_array[i].vlad_index);
                 return res.status(200).send({
                     "success": true,
                     "msg": "Here you go, have your results.",
@@ -173,7 +178,7 @@ exports.update_request = function (req, res) {
             "1msg": "Unfortunately " + req.body.status + " is not a valid status"
         });
     } else {
-        Request.update({ "_id": req.params.id }, { "status": req.body.status }).
+        Request.update({ "vlad_index": req.params.id }, { "status": req.body.status }).
             exec().
             then(
                 () => { res.status(200).send({ "success": true, "msg": "ok" }); }

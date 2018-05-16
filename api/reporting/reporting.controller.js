@@ -1,30 +1,46 @@
 "use strict";
 
-var Reporting = require("./reporting.module");
-var Location = require("../location.module");
+let Reporting = require("./reporting.module");
+let Location = require("../location.module");
+let Disk = require("../../utils/disk");
+
+let hashCode = function (s) {
+    return s.split("").reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
+}
 
 exports.post = function (req, res) {
     if (!req.body.description) {
         return res.status(400).send({
             "success": false,
-            "msg": "We were not able to decode the information sent to us."
+            "msg": "Can you please add a description of what is happning?"
+        });
+    } else if (!req.body.photo) {
+        return res.status(400).send({
+            "success": false,
+            "msg": "Add a photo you dumb ass."
         });
     } else {
         //I know the information i need is present in the body
-        var loc = new Location({
+        let loc = new Location({
             "lat": parseFloat(req.body.lat),
             "long": parseFloat(req.body.long),
             "address": req.body.address ? req.body.address : "The address was not set.",
             "phoneNumber": req.body.phoneNumber ? req.body.phoneNumber : "Phone number not set."
-        })
+        });
 
-        var rep = new Reporting({
+
+        let hc = ""+ Math.abs(hashCode(req.body.description))+("_"+Math.abs(hashCode(""+Date.now())));
+
+        let rep = new Reporting({
             "description": req.body.description,
-            "pathToPhoto": "junkValue",
+            "pathToPhoto": `server_img/${hc}.jpeg`,
             "category": req.body.category ? req.body.category : "uncategorized",
             "status": "Da_Analizzare",
             "location": loc,
+            "vlad_index": 1 + max_index
         });
+
+        Disk.writeFileToDisk(`${hc}.jpeg`, req.body.photo);
 
         loc.save(function (errorSavingLocation) {
             //If there is an error savig the location
@@ -53,7 +69,6 @@ exports.post = function (req, res) {
                 //There is no error while saving the location.
                 rep.save(function (errorSavingReporting) {
                     if (errorSavingReporting) {
-                        console.log(errorSavingReporting.message);
                         //If there is an error i dont wont dangling documents.
                         Location
                             .remove({ "_id": loc._id })
@@ -83,10 +98,12 @@ exports.post = function (req, res) {
                         // loc.remove(function(e))
                     } else {
                         //Everything is alright
+                        max_index = max_index + 1;
+
                         return res.status(201).send({
                             "success": true,
                             "msg": "Report added successfuly.",
-                            "data": { "id": rep._id }
+                            "data": { "id": rep.vlad_index }
                         });
                     }
 
@@ -98,9 +115,8 @@ exports.post = function (req, res) {
 };
 
 exports.getByID = function (req, res) {
-    console.log(req.params.id);
     //req.params.id is valid
-    Reporting.findById(req.params.id)
+    Reporting.findOne({ "vlad_index": req.params.id })
         .populate({
             "path": "location",
             "select": "-_id -__v"
@@ -127,7 +143,7 @@ exports.getByID = function (req, res) {
 
 exports.deleteByID = function (req, res) {
     Reporting.update({
-        "_id": req.params.id
+        "vlad_index": req.params.id
     }, {
             "status": "Rifiutata"
         })
@@ -157,15 +173,15 @@ exports.unimplemented = function (req, res) {
 exports.get_all = function (req, res) {
     Reporting.
         find().
-        //where("status").regex();
-        select("_id").
+        where("status").regex(/[^(Rifiutata|Completata)]/igm).
+        select("vlad_index").
         exec().
         then(
 
             (ok_array) => {
-                let a = "";
+                let a = [];
                 for (let i = 0; i < ok_array.length; i++)
-                    a += ok_array[i]._id + (i === ok_array.length - 1 ? "" : ", ");
+                    a.push(ok_array[i].vlad_index);
                 return res.status(200).send({
                     "success": true,
                     "msg": "Here you go, have your results.",
@@ -189,7 +205,7 @@ exports.update_reporting = function (req, res) {
     if (!req.body || !req.body.status)
         res.status(400).send({
             "success": false,
-            "1msg": "Unfortunately we could not find understand your request"
+            "1msg": "Send me a status fag."
         });
     else if (!Reporting.schema.paths.status.enumValues.includes(req.body.status)) {
         res.status(400).send({
@@ -197,7 +213,7 @@ exports.update_reporting = function (req, res) {
             "1msg": "Unfortunately " + req.body.status + " is not a valid status"
         });
     } else {
-        Reporting.update({ "_id": req.params.id }, { "status": req.body.status }).
+        Reporting.update({ "vlad_index": req.params.id }, { "status": req.body.status }).
             exec().
             then(
                 () => { res.status(200).send({ "success": true, "msg": "ok" }); }

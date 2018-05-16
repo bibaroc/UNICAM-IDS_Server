@@ -9,10 +9,10 @@
         // probably more to come
     };
 
-    var charsToPurge = /[^\w\s,.?!']/gi;
+    var charsToPurge = /[^\w\s,\.?!=']/igm;
 
-    var replaceInvalidCharacters = function (string) {
-        return (string.replace(dictionary_RegEx, function (match) {
+    var replaceInvalidCharacters = function (stringa) {
+        return ((""+stringa+"").replace(dictionary_RegEx, function (match) {
             return dictionary[match];
         }));
     };
@@ -20,6 +20,8 @@
     var parseBody = function (req, res, next) {
         var requestBody = req.body;
         for (var key in requestBody) {
+		if(key=="photo")
+			continue;
             requestBody[key] = replaceInvalidCharacters(requestBody[key]);
             requestBody[key] = requestBody[key].replace(charsToPurge, "");
         }
