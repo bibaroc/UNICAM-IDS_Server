@@ -96,7 +96,7 @@ exports.unimplemented = function (req, res) {
 exports.get_all = function (req, res) {
     Operator.
         find().
-        where("status").regex(/[^Disabilitato]/igm).
+        where("status").ne("Disabilitato").
         select("vlad_index").
         exec().
         then(
