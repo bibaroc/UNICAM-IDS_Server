@@ -4,7 +4,7 @@ var Location = require("../location.module");
 
 var repo = new Schema({
     "preferred_date": {
-        "type": String,
+        "type": Number,
         "required": true,
     },
     "status": {
