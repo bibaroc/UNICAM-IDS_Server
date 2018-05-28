@@ -4,9 +4,9 @@ var controller = require("./operator.controller");
 var Controll = require("../../utils/validID");
 var Purge = require("../../utils/purge");
 
-router.get("", controller.get_all);
+router.get("/", controller.get_all);
 router.get("/:id", Controll.isValidID, controller.getByID);
-router.post("", Purge.replace, controller.post);
+router.post("/", Purge.replace, controller.post);
 router.put("/:id", Purge.replace, Controll.isValidID, controller.unimplemented);
 router.delete("/:id", Controll.isValidID, controller.deleteByID);
 
