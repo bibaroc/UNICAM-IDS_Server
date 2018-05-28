@@ -42,12 +42,48 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
     $scope.search = {};
     $scope.data = [
 
-        { nome: "Renzi", cognome: "SHISH", indirizzo: "pozzi", dataInizio: "si", taskAssegnati: "5" },
-        { nome: "Berlusconi", cognome: "Mi consenta", indirizzo: "pozzi", dataInizio: "no", taskAssegnati: "5" },
-        { nome: "Salvini", cognome: "RUSPAA", indirizzo: "pozzi", dataInizio: "si", taskAssegnati: "5" },
-        { nome: "DiLuglio", cognome: "7Stelle", indirizzo: "pozzi", dataInizio: "si", taskAssegnati: "5" }
+        // { nome: "Renzi", cognome: "SHISH", indirizzo: "pozzi", dataInizio: "si", taskAssegnati: "5" },
+        // { nome: "Berlusconi", cognome: "Mi consenta", indirizzo: "pozzi", dataInizio: "no", taskAssegnati: "5" },
+        // { nome: "Salvini", cognome: "RUSPAA", indirizzo: "pozzi", dataInizio: "si", taskAssegnati: "5" },
+        // { nome: "DiLuglio", cognome: "7Stelle", indirizzo: "pozzi", dataInizio: "si", taskAssegnati: "5" }
 
     ];
+    $http.get("api/operator")
+    .then(
+        //Questa viene runnata, se ti rispondo con codici da 100 a 499
+        (response) => {
+            //console.log(response);
+             for (let i = 0; i < response.data.data.ids.length; i++) {
+                 $http.get("/api/operator/" + response.data.data.ids[i]).then(
+                     (res) => {
+                         console.log(res.data.data);
+                      
+                         $scope.data.push({
+                            id : res.data.data.vlad_index,
+                            nome: res.data.data.name,
+                            cognome: res.data.data.last_name
+                            
+
+                         });
+                     },
+                     (res) => { }
+                 )
+             }
+
+        },
+        //Questa viene runnato con 500
+        (data) => { }
+    );
+    $scope.setEliminaOperatore = (a) => {
+        console.log(a + " si elimina tale richiesta");
+        window.idOperatorToDelete = a;
+    }
+    $scope.confermaRemoveOperatore = () => {
+        console.log(window.idOperatorToDelete);
+        $http.delete("/api/operator/"+window.idOperatorToDelete);
+        window.idOperatorToDelete = "";
+        location.reload();
+    }
 
 });
 var ciccio = "ciao";

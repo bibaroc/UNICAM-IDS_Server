@@ -8,6 +8,7 @@
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="margin-top: 10px;">
                 <thead>
                   <tr>
+                      <th>ID</th>
                     <th>Nome</th>
                     <th>Cognome</th>
                     <th>TaskAssegnati</th>
@@ -17,10 +18,11 @@
               <tbody>
                 
                   <tr ng-repeat="temp in data | filter:search">
+                      <td>{{temp.id}}</td>
                       <td>{{temp.nome}}</td>
                       <td>{{temp.cognome}}</td>
                       <td>{{temp.taskAssegnati}}</td>
-                    <td><a class="btn btn-primary" data-toggle="modal" data-target="#exampleModalsa">RIMUOVI OPERATORE</a></td>
+                    <td><a class="btn btn-primary" data-toggle="modal" data-target="#exampleModalsa" ng-click="setEliminaOperatore(temp.id)">RIMUOVI OPERATORE</a></td>
                   </tr>
               
                 </tbody>
@@ -37,10 +39,10 @@
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <div class="modal-body">Se scegli di procedere l'operatore tornerà ad essere un utente normale del sistema.</div>
+                  <div class="modal-body">Se scegli di procedere l'operatore sarà rimosso dal sistema.</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                    <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+                    <a class="btn btn-primary" ng-click="confermaRemoveOperatore()">Procedi</a>
                   </div>
                 </div>
               </div>
