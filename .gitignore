@@ -61,3 +61,5 @@ typings/
 /.vs/slnx.sqlite
 /.vs/UNICAM-IDS_Server/v15/.suo
 config/database.config.js
+Nettezza_smart.vpp.*
+.Nettezza_SMART.vpp.lck
