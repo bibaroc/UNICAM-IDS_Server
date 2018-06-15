@@ -188,7 +188,7 @@ exports.update = function (req, res) {
     if (!req.body || !req.body.status)
         res.status(400).send({
             "success": false,
-            "1msg": "Unfortunately we could not find understand your request"
+            "msg": "Unfortunately we could not find understand your request"
         });
     else if (!Reporting.schema.paths.status.enumValues.includes(req.body.status)) {
         res.status(400).send({
@@ -206,9 +206,101 @@ exports.update = function (req, res) {
                     res.status(400).send({ "success": false, "msg": error.message });
                 }
             );
-
-
     }
+};
 
+exports.assign_task = function (req, res) {
 
+    if (!req.body || !req.body.task) {
+        return res.status(400).send({
+            "success": false,
+            "msg": "Please specify what task to assign to the operator."
+        });
+    }
+    let reportingQuery = Reporting
+        .findOne()
+        .select("vlad_index")
+        .where({ "vlad_index": req.body.task })
+        .exec();
+    let requestQuery = Request
+        .findOne()
+        .where({ "vlad_index": req.body.task })
+        .exec();
+    Operator
+        .findOne()
+        .where({ "vlad_index": req.params.id })
+        .exec()
+        .then(
+            (operator) => {
+                if (!operator)
+                    return res.status(200).send({
+                        "success": true,
+                        "msg": "Operator with code: " + req.params.id + " not found."
+                    });
+                reportingQuery.then(
+                    (reporting) => {
+                        if (reporting) {
+                            if (operator.assigned_reportings.indexOf(reporting.vlad_index) < 0 && operator.assigned_reportings.length < 5) {
+                                operator.assigned_reportings.push(reporting.vlad_index);
+                                operator.save((error_saving) => {
+                                    if (error_saving)
+                                        return res.status(400).send({
+                                            "success": false,
+                                            "msg": error
+                                        });
+                                    reporting.status = "Accettata";
+                                    reporting.save((error) => { if (error) throw error; });
+                                    return res.status(200).send({
+                                        "success": true,
+                                        "msg": "Task " + reporting.vlad_index + " assigned to " + operator.vlad_index + "."
+                                    });
+                                });
+                            } else
+                                return res.status(400).send({
+                                    "success": false,
+                                    "msg": "We had troubles assigning the reporting to the operator"
+                                });
+                        } else {
+                            requestQuery.then(
+                                (request) => {
+                                    if (request) {
+                                        if (operator.assigned_requests.indexOf(request.vlad_index) < 0 && operator.assigned_requests.length < 5) {
+                                            operator.assigned_requests.push(request.vlad_index);
+                                            operator.save((error_saving) => {
+                                                if (error_saving)
+                                                    return res.status(400).send({
+                                                        "success": false,
+                                                        "msg": error
+                                                    });
+                                                request.status = "Accettata";
+                                                request.save((error) => { if (error) throw error; });
+                                                return res.status(200).send({
+                                                    "success": true,
+                                                    "msg": "Task " + request.vlad_index + " assigned to " + operator.vlad_index + "."
+                                                });
+                                            });
+                                        } else
+                                            return res.status(400).send({
+                                                "success": false,
+                                                "msg": "We had troubles assigning the request to the operator"
+                                            });
+                                    } else {
+                                        return res.status(400).send({
+                                            "success": false,
+                                            "msg": "We could not find the task you wanted to give."
+                                        });
+                                    }
+                                }
+                            );
+                        }
+                    }
+                );
+            }
+        )
+        .catch((error) => {
+            return res.status(400).send({
+                "success": false,
+                "msg": error
+            });
+        });
 };

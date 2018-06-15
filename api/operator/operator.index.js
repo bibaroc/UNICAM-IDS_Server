@@ -9,7 +9,7 @@ router.get("/request_free", controller.get_free_for_request);
 router.get("/reporting_free", controller.get_free_for_reporting);
 router.get("/:id", Controll.isValidID, controller.getByID);
 router.post("/", Purge.replace, controller.post);
-router.put("/:id", Purge.replace, Controll.isValidID, controller.unimplemented);
+router.put("/:id", Purge.replace, Controll.isValidID, controller.assign_task);
 router.delete("/:id", Controll.isValidID, controller.deleteByID);
 
 module.exports = router;
