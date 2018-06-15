@@ -179,7 +179,18 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
 
     }
     $scope.confermaAssegnazioneRichiesta = () =>{
-        $http.put("/api/operator/"+window.operatoreDaBindare, { task: window.richiestaDaBindare} );
+        if(window.operatoreDaBindare){
+            document.getElementById("requeAssClose").click();
+            $http.put("/api/operator/"+window.operatoreDaBindare, { task: window.richiestaDaBindare} );
+            location.reload();
+        }else{
+            document.getElementById("msgModalRequest").innerText = "Per favore seleziona un operatore";
+            setTimeout(
+                function() {
+                    document.getElementById("msgModalRequest").innerText = "";
+                }, 3000);
+        }
+        
     }
    
   
@@ -266,7 +277,18 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
     
         }
         $scope.confermaAssegnazioneSegnalazione = () =>{
-            $http.put("/api/operator/"+window.operatoreDaBindareSegnalazione, { task: window.segnalazioneDaBindare} );
+            if(window.operatoreDaBindareSegnalazione){
+                document.getElementById("repoAssClose").click();
+                $http.put("/api/operator/"+window.operatoreDaBindareSegnalazione, { task: window.segnalazioneDaBindare} );
+                location.reload();
+            }else{
+                document.getElementById("msgModalReporting").innerText = "Per favore seleziona un operatore";
+                setTimeout(
+                    function() {
+                        document.getElementById("msgModalReporting").innerText = "";
+                    }, 3000);
+            }
+            
         }
 });
 //CONTROLLER UTENTI
