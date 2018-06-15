@@ -2,6 +2,7 @@
 
 let Reporting = require("./reporting.module");
 let Location = require("../location.module");
+var Operator = require("../operator/operator.module");
 let Disk = require("../../utils/disk");
 
 let hashCode = function (s) {
@@ -213,6 +214,18 @@ exports.update_reporting = function (req, res) {
             "1msg": "Unfortunately " + req.body.status + " is not a valid status"
         });
     } else {
+        if (req.body.status == "Completata") {
+            Operator
+                .findOne()
+                .where({ "assigned_reportings": req.params.id })
+                .exec()
+                .then(
+                    (ok) => {
+                        ok.assigned_reportings = ok.assigned_reportings.filter((vlad_index) => { return vlad_index != req.params.id });
+                        ok.save((error) => { if (error) throw error; });
+                    }
+                )
+        }
         Reporting.update({ "vlad_index": req.params.id }, { "status": req.body.status }).
             exec().
             then(

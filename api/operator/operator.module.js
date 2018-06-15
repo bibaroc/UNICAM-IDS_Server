@@ -18,12 +18,10 @@ var repo = new Schema({
         "required": [true, "An operator must be either Abilitato or Disabilitato"]
     },
     "assigned_requests": {
-        "type": [Number],
-        "ref": "Request"
+        "type": [Number]
     },
     "assigned_reportings": {
-        "type": [Number],
-        "ref": "Reporting"
+        "type": [Number]
     },
     "vlad_index": {
         "type": Number,

@@ -2,6 +2,7 @@
 
 var Request = require("./request.module");
 var Location = require("../location.module");
+var Operator = require("../operator/operator.module");
 
 exports.make_new = function (req, res) {
     //I know the information i need is present in the body
@@ -115,7 +116,7 @@ exports.get_by_ID = function (req, res) {
 
 exports.delete_by_id = function (req, res) {
     Request.update({
-    
+
         "vlad_index": req.params.id
     }, {
             "status": "Rifiutata"
@@ -178,6 +179,18 @@ exports.update_request = function (req, res) {
             "1msg": "Unfortunately " + req.body.status + " is not a valid status"
         });
     } else {
+        if (req.body.status == "Completata") {
+            Operator
+                .findOne()
+                .where({ "assigned_requests": req.params.id })
+                .exec()
+                .then(
+                    (ok) => {
+                        ok.assigned_requests = ok.assigned_requests.filter((vlad_index) => { return vlad_index != req.params.id });
+                        ok.save((error) => { if (error) throw error; });
+                    }
+                )
+        }
         Request.update({ "vlad_index": req.params.id }, { "status": req.body.status }).
             exec().
             then(
