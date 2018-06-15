@@ -123,6 +123,66 @@ exports.get_all = function (req, res) {
         );
 };
 
+exports.get_free_for_reporting = function (req, res) {
+    Operator.
+        find().
+        where("status").ne("Disabilitato").
+        select("vlad_index assigned_reportings").
+        exec().
+        then(
+            (ok_array) => {
+                let a = [];
+                for (let i = 0; i < ok_array.length; i++)
+                    if (ok_array[i].assigned_reportings.length < 5)
+                        a.push(ok_array[i].vlad_index);
+                return res.status(200).send({
+                    "success": true,
+                    "msg": "Here you go, have your results.",
+                    "data": { "ids": a }
+                });
+            }
+
+        ).
+        catch(
+            (error) => {
+                return res.status(500).send({
+                    "success": false,
+                    "msg": "Unfortunatly something went wrong while looking up the database."
+                });
+            }
+        );
+};
+
+exports.get_free_for_request = function (req, res) {
+    Operator.
+        find().
+        where("status").ne("Disabilitato").
+        select("vlad_index assigned_requests").
+        exec().
+        then(
+            (ok_array) => {
+                let a = [];
+                for (let i = 0; i < ok_array.length; i++)
+                    if (ok_array[i].assigned_requests.length < 5)
+                        a.push(ok_array[i].vlad_index);
+                return res.status(200).send({
+                    "success": true,
+                    "msg": "Here you go, have your results.",
+                    "data": { "ids": a }
+                });
+            }
+
+        ).
+        catch(
+            (error) => {
+                return res.status(500).send({
+                    "success": false,
+                    "msg": "Unfortunatly something went wrong while looking up the database."
+                });
+            }
+        );
+};
+
 exports.update = function (req, res) {
 
     if (!req.body || !req.body.status)
