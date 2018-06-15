@@ -30,7 +30,7 @@ exports.post = function (req, res) {
         });
 
 
-        let hc = ""+ Math.abs(hashCode(req.body.description))+("_"+Math.abs(hashCode(""+Date.now())));
+        let hc = "" + Math.abs(hashCode(req.body.description)) + ("_" + Math.abs(hashCode("" + Date.now())));
 
         let rep = new Reporting({
             "description": req.body.description,
@@ -174,7 +174,7 @@ exports.unimplemented = function (req, res) {
 exports.get_all = function (req, res) {
     Reporting.
         find().
-        where("status").regex(/[^(Rifiutata|Completata)]/igm).
+        where({ "status": "Da_Analizzare" }).
         select("vlad_index").
         exec().
         then(

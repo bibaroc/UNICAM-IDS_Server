@@ -139,7 +139,7 @@ exports.delete_by_id = function (req, res) {
 exports.get_all = function (req, res) {
     Request.
         find().
-        where("status").regex(/[^(Rifiutata|Completata)]/igm).
+        where({ "status": "Da_Analizzare" }).
         select("vlad_index").
         exec().
         then(
