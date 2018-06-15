@@ -169,6 +169,9 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
     }
     $scope.setOperatoreScelto = (s) => {
         if(window.previousOperatorForRequest){
+            if(s==window.previousOperatorForRequest){
+                s = undefined;
+            }
             if(s!==window.previousOperatorForRequest){
                 //se il nuovo è diverso dal precende, il precendete lo disabilito
                 document.getElementById(window.previousOperatorForRequest+"opRequest").checked = false;
@@ -267,6 +270,9 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
         }
         $scope.setOperatoreSceltoPerSegnalazione = (s) => {
             if(window.previousOperatorForReporting){
+                if(s==window.previousOperatorForRequest){
+                    s = undefined;
+                }
                 if(s!==window.previousOperatorForReporting){
                     //se il nuovo è diverso dal precende, il precendete lo disabilito
                     document.getElementById(window.previousOperatorForReporting+"opReporting").checked = false;
