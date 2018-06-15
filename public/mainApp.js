@@ -56,8 +56,6 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
              for (let i = 0; i < response.data.data.ids.length; i++) {
                  $http.get("/api/operator/" + response.data.data.ids[i]).then(
                      (res) => {
-                         console.log(res.data.data);
-                      
                          $scope.data.push({
                             id : res.data.data.vlad_index,
                             nome: res.data.data.name,
@@ -96,6 +94,7 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
          { id: "01293", data: "03/03/2018", immagine: "foto", cordinate: "NN", descrizione: "blabla" },
          { id: "01283", data: "03/03/2018", immagine: "foto", cordinate: "NN", descrizione: "blabla" },*/
     ];
+    $scope.operator = [];
     $http.get("/api/request/")
         .then(
             //Questa viene runnata, se ti rispondo con codici da 100 a 499
@@ -106,9 +105,11 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
                         (res) => {
 
                             let time = new Date(res.data.data.date);
+                            
                             $scope.data.push({
-
+                                
                                 id: response.data.data.ids[i],
+                                name: res.data.data.name,
                                 data: time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear(),
                                 numero: res.data.data.location.phoneNumber,
                                 status: res.data.data.status
@@ -123,7 +124,32 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
             //Questa viene runnato con 500
             (data) => { }
         );
+        $http.get("api/operator/request_free")
+        .then(
+            //Questa viene runnata, se ti rispondo con codici da 100 a 499
+            (response) => {
+                //console.log(response.data.data.ids);
+                 for (let i = 0; i < response.data.data.ids.length; i++) {
+                     $http.get("/api/operator/" + response.data.data.ids[i]).then(
+                         (res) => {
+                             //console.log(res.data.data);
+                            
+                             $scope.operator.push({
+                                idop : res.data.data.vlad_index,
+                                nomeop: res.data.data.name,
+                                cognomeop: res.data.data.last_name
+                                
     
+                             });
+                         },
+                         (res) => { }
+                     )
+                 }
+    
+            },
+            //Questa viene runnato con 500
+            (operator) => { }
+        );
     $scope.setEliminaRichiesta = (a) => {
         console.log(a + " si elimina tale richiesta");
         window.abcdef = a;
@@ -176,6 +202,33 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
             },
             //Questa viene runnato con 500
             (data) => { }
+        );
+        $scope.operator = [];
+        $http.get("api/operator/reporting_free")
+        .then(
+            //Questa viene runnata, se ti rispondo con codici da 100 a 499
+            (response) => {
+                console.log(response.data.data.ids);
+                 for (let i = 0; i < response.data.data.ids.length; i++) {
+                     $http.get("/api/operator/" + response.data.data.ids[i]).then(
+                         (res) => {
+                             //console.log(res.data.data);
+                            
+                             $scope.operator.push({
+                                idop : res.data.data.vlad_index,
+                                nomeop: res.data.data.name,
+                                cognomeop: res.data.data.last_name
+                                
+    
+                             });
+                         },
+                         (res) => { }
+                     )
+                 }
+    
+            },
+            //Questa viene runnato con 500
+            (operator) => { }
         );
 
 });
