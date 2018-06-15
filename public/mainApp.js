@@ -54,13 +54,17 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
         (response) => {
             //console.log(response);
              for (let i = 0; i < response.data.data.ids.length; i++) {
+                
                  $http.get("/api/operator/" + response.data.data.ids[i]).then(
+                     
                      (res) => {
+                         console.log(res.data.data);
                          $scope.data.push({
                             id : res.data.data.vlad_index,
                             nome: res.data.data.name,
-                            cognome: res.data.data.last_name
-                            
+                            cognome: res.data.data.last_name,
+                            richieste: res.data.data.assigned_requests,
+                            segnalazioni: res.data.data.assigned_reportings
 
                          });
                      },
@@ -99,7 +103,7 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
         .then(
             //Questa viene runnata, se ti rispondo con codici da 100 a 499
             (response) => {
-
+                
                 for (let i = 0; i < response.data.data.ids.length; i++) {
                     $http.get("/api/request/" + response.data.data.ids[i]).then(
                         (res) => {
@@ -160,7 +164,24 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
         window.abcdef = "";
         location.reload();
     }
+    $scope.bindaOperatore = (c) => {
+        window.richiestaDaBindare = c;
+    }
+    $scope.setOperatoreScelto = (s) => {
+        if(window.previousOperatorForRequest){
+            if(s!==window.previousOperatorForRequest){
+                //se il nuovo è diverso dal precende, il precendete lo disabilito
+                document.getElementById(window.previousOperatorForRequest+"opRequest").checked = false;
+            }
+        }
+        window.previousOperatorForRequest = s;
+        window.operatoreDaBindare = s;
 
+    }
+    $scope.confermaAssegnazioneRichiesta = () =>{
+        $http.put("/api/operator/"+window.operatoreDaBindare, { task: window.richiestaDaBindare} );
+    }
+   
   
    
 
@@ -230,7 +251,23 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
             //Questa viene runnato con 500
             (operator) => { }
         );
-
+        $scope.bindaOperatorePerSegnalazione = (c) => {
+            window.segnalazioneDaBindare = c;
+        }
+        $scope.setOperatoreSceltoPerSegnalazione = (s) => {
+            if(window.previousOperatorForReporting){
+                if(s!==window.previousOperatorForReporting){
+                    //se il nuovo è diverso dal precende, il precendete lo disabilito
+                    document.getElementById(window.previousOperatorForReporting+"opReporting").checked = false;
+                }
+            }
+            window.previousOperatorForReporting = s;
+            window.operatoreDaBindareSegnalazione = s;
+    
+        }
+        $scope.confermaAssegnazioneSegnalazione = () =>{
+            $http.put("/api/operator/"+window.operatoreDaBindareSegnalazione, { task: window.segnalazioneDaBindare} );
+        }
 });
 //CONTROLLER UTENTI
 app.controller('utentiCtrl', function ($scope, $location, $http) {

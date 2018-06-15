@@ -11,7 +11,8 @@
                       <th>ID</th>
                     <th>Nome</th>
                     <th>Cognome</th>
-                    <th>TaskAssegnati</th>
+                    <th>Richieste assegnate</th>
+                    <th>Segnalazioni assegnate</th>
                     <th>Rimuovi operatore</th>
                   </tr>
                 </thead>
@@ -21,7 +22,8 @@
                       <td>{{temp.id}}</td>
                       <td>{{temp.nome}}</td>
                       <td>{{temp.cognome}}</td>
-                      <td>{{temp.taskAssegnati}}</td>
+                      <td>{{temp.richieste}}</td>
+                      <td>{{temp.segnalazioni}}</td>
                     <td><a class="btn btn-primary" data-toggle="modal" data-target="#exampleModalsa" ng-click="setEliminaOperatore(temp.id)">RIMUOVI OPERATORE</a></td>
                   </tr>
               

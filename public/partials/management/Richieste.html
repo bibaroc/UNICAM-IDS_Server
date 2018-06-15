@@ -25,7 +25,7 @@
                     <td>{{temp.data}}</td>
                     <td>{{temp.numero}}</td>
                     <td>{{temp.status}}</td>
-                    <td><a class="btn btn-primary" data-toggle="modal" data-target="#asseRichiesta">ASSEGNA</a></td>
+                    <td><a class="btn btn-primary" data-toggle="modal" data-target="#asseRichiesta" ng-click="bindaOperatore(temp.id)">ASSEGNA</a></td>
                     <td><a class="btn btn-primary"  data-toggle="modal" data-target="#rimuoviRichieste" ng-click="setEliminaRichiesta(temp.id)">ELIMINA</a></td>
                   </tr>
                  
@@ -55,7 +55,7 @@
                     <tbody>
                       
                         <tr ng-repeat="temp in operator | filter:search">
-                            <td><input type="checkbox"></td>
+                            <td><input  id="{{temp.idop}}opRequest" type="checkbox" ng-click="setOperatoreScelto(temp.idop)"></td>
                             <td>{{temp.idop}}</td>
                             <td>{{temp.nomeop}}</td>
                             <td>{{temp.cognomeop}}</td>
@@ -67,7 +67,7 @@
                   <div class="modal-footer">
                    
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                    <a class="btn btn-primary" >Procedi</a>
+                    <a class="btn btn-primary" ng-click="confermaAssegnazioneRichiesta()"  >Procedi</a>
                   </div>
                 </div>
               </div>

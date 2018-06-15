@@ -31,7 +31,7 @@
         <td>{{temp.descrizione}}</td>
         <td>{{temp.status}}</td>
         <td>
-          <a class="btn btn-primary" data-toggle="modal" data-target="#assegnaSegnalazioni">ASSEGNA</a>
+          <a class="btn btn-primary" data-toggle="modal" data-target="#assegnaSegnalazioni" ng-click="bindaOperatorePerSegnalazione(temp.id)">ASSEGNA</a>
         </td>
         <td>
           <a class="btn btn-primary" data-toggle="modal" data-target="#rimuoviSegnalazioni">ELIMINA</a>
@@ -41,7 +41,6 @@
     </tbody>
   </table>
 </div>
-
 
 
 
@@ -85,7 +84,7 @@
             <tbody>
               
                 <tr ng-repeat="temp in operator | filter:search">
-                    <td><input type="checkbox"></td>
+                    <td><input id="{{temp.idop}}opReporting" type="checkbox"  ng-click="setOperatoreSceltoPerSegnalazione(temp.idop)"></td>
                     <td>{{temp.idop}}</td>
                     <td>{{temp.nomeop}}</td>
                     <td>{{temp.cognomeop}}</td>
@@ -97,8 +96,10 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-        <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+        <a class="btn btn-primary" ng-click="confermaAssegnazioneSegnalazione()" >Procedi</a>
       </div>
     </div>
   </div>
+
 </div>
+
