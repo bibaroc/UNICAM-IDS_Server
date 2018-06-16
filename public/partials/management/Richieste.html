@@ -33,7 +33,23 @@
               </table>
             </div>
         
-
+            <div class="modal fade" id="rimuoviRichieste" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Sicuro dell'operazione scelta?</h5>
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">Se scegli di procedere la richiesta sarà eliminata.</div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
+                      <a class="btn btn-primary" ng-click="confermaEliminaRichiesta()">Procedi</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class="modal fade" id="asseRichiesta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -74,20 +90,4 @@
               </div>
             </div>
 
-            <div class="modal fade" id="rimuoviRichieste" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Sicuro dell'operazione scelta?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">×</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">Se scegli di procedere la richiesta sarà eliminata.</div>
-                  <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                    <a class="btn btn-primary" ng-click="conferma()">Procedi</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            

@@ -34,7 +34,7 @@
           <a class="btn btn-primary" data-toggle="modal" data-target="#assegnaSegnalazioni" ng-click="bindaOperatorePerSegnalazione(temp.id)">ASSEGNA</a>
         </td>
         <td>
-          <a class="btn btn-primary" data-toggle="modal" data-target="#rimuoviSegnalazioni">ELIMINA</a>
+          <a class="btn btn-primary" data-toggle="modal" data-target="#rimuoviSegnalazioni" ng-click="setEliminaSegnalazione(temp.id)">ELIMINA</a>
         </td>
       </tr>
 
@@ -56,7 +56,7 @@
       <div class="modal-body">Se scegli di procedere la segnalazione sarà eliminata.</div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-        <a class="btn btn-primary" href="/partials/user/login.html">Procedi</a>
+        <a class="btn btn-primary" ng-click="confermaEliminaSegnalazione()">Procedi</a>
       </div>
     </div>
   </div>

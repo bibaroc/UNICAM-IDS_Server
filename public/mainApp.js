@@ -157,7 +157,7 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
         console.log(a + " si elimina tale richiesta");
         window.abcdef = a;
     }
-    $scope.conferma = () => {
+    $scope.confermaEliminaRichiesta = () => {
         console.log(window.abcdef);
         $http.delete("/api/request/"+window.abcdef);
         window.abcdef = "";
@@ -300,6 +300,16 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
         $scope.openImage = (Newsrc) => {
             document.getElementById("reportingImage").src = Newsrc;
             document.getElementById("imageContainer").style.display = "table";
+        }
+        $scope.setEliminaSegnalazione = (a) => {
+            console.log(a + " si elimina tale segnalazione");
+            window.reportingDelete = a;
+        }
+        $scope.confermaEliminaSegnalazione = () => {
+            console.log(window.reportingDelete);
+            $http.delete("/api/reporting/"+window.reportingDelete);
+            window.reportingDelete = "";
+            location.reload();
         }
 });
 //CONTROLLER UTENTI
