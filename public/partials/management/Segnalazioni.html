@@ -10,7 +10,7 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Data [ Mese/Giorno/Anno ]</th>
+        <th>Data</th>
         <th>Foto</th>
         <th>Cordinate</th>
         <th>Descrizione</th>
@@ -64,7 +64,7 @@
 <script>
   
 </script>
-<div id="imageContainer" style="display:none;width: 50%;height: 60%; position: absolute;z-index:10;background-color: white;top:100px">
+<div id="imageContainer" style="display:none;width: 50%;height: 60%; position: absolute;z-index:10;background-color: white;top:100px;left: 30%">
   <button style="width: 100%" ng-click="closeImage()">X</button>
 <div style="width: 100%;min-height:400px;">
   <img id="reportingImage" src="" alt="" style="min-width: 100%; min-height: 100%;border:1px solid #DDD">
@@ -92,7 +92,7 @@
             <tbody>
               
                 <tr ng-repeat="temp in operator | filter:search">
-                    <td><input id="{{temp.idop}}opReporting" type="checkbox"  ng-click="setOperatoreSceltoPerSegnalazione(temp.idop)"></td>
+                    <td><input id="{{temp.idop}}opReporting" type="radio"  ng-click="setOperatoreSceltoPerSegnalazione(temp.idop)"></td>
                     <td>{{temp.idop}}</td>
                     <td>{{temp.nomeop}}</td>
                     <td>{{temp.cognomeop}}</td>
