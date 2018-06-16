@@ -58,7 +58,6 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
                  $http.get("/api/operator/" + response.data.data.ids[i]).then(
                      
                      (res) => {
-                         console.log(res.data.data);
                          $scope.data.push({
                             id : res.data.data.vlad_index,
                             nome: res.data.data.name,
@@ -77,14 +76,61 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
         (data) => { }
     );
     $scope.setEliminaOperatore = (a) => {
-        console.log(a + " si elimina tale richiesta");
         window.idOperatorToDelete = a;
     }
     $scope.confermaRemoveOperatore = () => {
-        console.log(window.idOperatorToDelete);
         $http.delete("/api/operator/"+window.idOperatorToDelete);
         window.idOperatorToDelete = "";
         location.reload();
+    }
+    $scope.closeAddOperator = () => {
+        document.getElementById("addOperator").style.display = "none";
+    }
+    $scope.aggiungiOperatore  = () => {
+        let containerFormAddOperator = document.getElementById("formOperator");
+        containerFormAddOperator.innerHTML = "";
+        let name = document.createElement("input");
+        let lastName = document.createElement("input");
+        let namespan = document.createElement("span");
+        namespan.innerText = "Nome";
+        let lastnamespan = document.createElement("span");
+        lastnamespan.innerText = "Cognome";
+        name.setAttribute("id","name");
+        lastName.setAttribute("id","lastName");
+        name.style.display = "block";
+        lastName.style.display = "block";
+        containerFormAddOperator.appendChild(name);
+        containerFormAddOperator.appendChild(namespan);
+        containerFormAddOperator.appendChild(lastName);
+        containerFormAddOperator.appendChild(lastnamespan);
+        document.getElementById("resultAddingOperator").innerText = "";
+        document.getElementById("addOperator").style.display = "table";
+    }
+    
+    $scope.confermaAddOperatore = () => {
+        let name = document.getElementById("name").value;
+        let lastName = document.getElementById("lastName").value;
+        if(name=="" || lastName==""){
+            document.getElementById("resultAddingOperator").innerText = "Per favore inserire le informazioni su tutti i campi.";
+            setTimeout(
+                function() {
+                    document.getElementById("resultAddingOperator").innerText = "";
+                }, 3000);
+        }else{
+            let nameFiltred = name.replace(/[^\w\s]/gi, '');
+            let lastnameFiltred = lastName.replace(/[^\w\s]/gi, '');
+            $http.post("/api/operator", { "name": nameFiltred, "last_name": lastnameFiltred }).then(
+                (ok) => {
+                    document.getElementById("name").value = "";
+                    document.getElementById("lastName").value = "";
+                    document.getElementById("resultAddingOperator").innerText = "Operazione eseguita con successo. L'operatore : "+nameFiltred+" "+lastnameFiltred+" è stato aggiunto con successo."+" L'id da fornire all'operatore è : "+ok.data.data.id + " , la password da utilizzare per loggarsi è operatore"+ok.data.data.id+".";
+                }, (notOk) =>{
+
+                }
+            )
+
+        }
+
     }
 
 });
@@ -154,11 +200,9 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
             (operator) => { }
         );
     $scope.setEliminaRichiesta = (a) => {
-        console.log(a + " si elimina tale richiesta");
         window.abcdef = a;
     }
     $scope.confermaEliminaRichiesta = () => {
-        console.log(window.abcdef);
         $http.delete("/api/request/"+window.abcdef);
         window.abcdef = "";
         location.reload();
@@ -302,11 +346,9 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
             document.getElementById("imageContainer").style.display = "table";
         }
         $scope.setEliminaSegnalazione = (a) => {
-            console.log(a + " si elimina tale segnalazione");
             window.reportingDelete = a;
         }
         $scope.confermaEliminaSegnalazione = () => {
-            console.log(window.reportingDelete);
             $http.delete("/api/reporting/"+window.reportingDelete);
             window.reportingDelete = "";
             location.reload();
