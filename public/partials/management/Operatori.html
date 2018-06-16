@@ -4,7 +4,7 @@
             <div style="display: inline;margin-right: 20px;margin-left: 20px;">CERCA</div>
             <input type="text" ng-model="search.nome" placeholder="Nome">
             <input type="text" ng-model="search.cognome" placeholder="Cognome">
-            
+            <button ng-click="aggiungiOperatore()" style="right:30px; position: absolute;border: 1px solid #ddd">Aggiungi un operatore</button>
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="margin-top: 10px;">
                 <thead>
                   <tr>
@@ -49,3 +49,14 @@
                 </div>
               </div>
             </div>
+            <div id="addOperator" style="display:none;width: 50%;height: 40%; position: absolute;z-index:10;background-color: white;top:100px;left: 30%">
+                <button style="width: 100%" ng-click="closeAddOperator()">Annulla</button>
+                <p> <br> Aggiungi un nuovo operatore semplicemente inserendo il suo nome e cognome.</p>
+                <br>
+                <div id="formOperator" style="display: table; margin: 0 auto;"></div>
+                <br>
+                <span>Risultato dell'operazione :  <span id="resultAddingOperator" style="color: red;"> </span></span>
+                <br>
+                <button style="width: 100%;bottom:0;position: absolute;" ng-click="confermaAddOperatore()">Aggiungi</button>
+              
+              </div>
