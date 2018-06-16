@@ -109,12 +109,11 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
                         (res) => {
 
                             let time = new Date(res.data.data.date);
-                            
                             $scope.data.push({
                                 
                                 id: response.data.data.ids[i],
                                 name: res.data.data.name,
-                                data: time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear(),
+                                data: time.toLocaleDateString(),
                                 numero: res.data.data.location.phoneNumber,
                                 status: res.data.data.status
 
@@ -222,7 +221,7 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
                             $scope.data.push({
 
                                 id: response.data.data.ids[i],
-                                data: time.getDay() + "/" + time.getMonth() + "/" + time.getFullYear(),
+                                data: time.toLocaleDateString(),
                                 immagine: res.data.data.pathToPhoto,
                                 cordinate: res.data.data.location.lat + " : " + res.data.data.location.long,
                                 descrizione: res.data.data.description,
