@@ -38,7 +38,7 @@
                 "success": false,
                 "msg": "We are sorry, but we realy need your address and phone number."
             });
-        } else if (!/([0-9]{10})$/.test(req.body.phone)) {
+        } else if (!/([0-9]{7,12})$/.test(req.body.phone)) {
             return res.status(400).send({
                 "success": false,
                 "msg": req.body.phone + " is not a valid phone number."
