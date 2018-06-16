@@ -242,7 +242,6 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
         .then(
             //Questa viene runnata, se ti rispondo con codici da 100 a 499
             (response) => {
-                console.log(response.data.data.ids);
                  for (let i = 0; i < response.data.data.ids.length; i++) {
                      $http.get("/api/operator/" + response.data.data.ids[i]).then(
                          (res) => {
@@ -299,7 +298,6 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
             document.getElementById("imageContainer").style.display = "none";
           }
         $scope.openImage = (Newsrc) => {
-            console.log(Newsrc);
             document.getElementById("reportingImage").src = Newsrc;
             document.getElementById("imageContainer").style.display = "table";
         }
