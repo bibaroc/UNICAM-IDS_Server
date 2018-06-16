@@ -65,24 +65,58 @@ exports.getByID = function (req, res) {
 };
 
 exports.deleteByID = function (req, res) {
-    Operator.update({
-        "vlad_index": req.params.id
-    }, {
-            "status": "Disabilitato"
-        })
-        .exec(function (err) {
-            if (err) {
+    Operator
+        .findOne()
+        .where({ "vlad_index": req.params.id })
+        .exec()
+        .then(
+            (operator) => {
+                if (!operator)
+                    return res.status(404).send({
+                        "success": false,
+                        "msg": "We could not find the operator: " + req.params.id + "."
+                    });
+                let requests = operator.assigned_requests,
+                    reportings = operator.assigned_reportings;
+
+                operator.status = "Disabilitato";
+                operator.assigned_requests = [];
+                operator.assigned_reportings = [];
+
+                operator.save((error_saving_operator) => {
+                    if (error_saving_operator)
+                        return res.status(500).send({
+                            "success": false,
+                            "msg": "We had troubes saving changes to the database, please dont retry"
+                        });
+                    Reporting
+                        .find()
+                        .where({ "vlad_index": reportings })
+                        .exec()
+                        .then(
+                            (results) => { for (let i = 0; i < results.length; i++)results[i].status = "Da_Analizzare", results[i].save(); }
+                        );
+                    Request
+                        .find()
+                        .where({ "vlad_index": requests })
+                        .exec()
+                        .then(
+                            (results) => { for (let i = 0; i < results.length; i++)results[i].status = "Da_Analizzare", results[i].save(); }
+                        );
+                    return res.status(200).send({
+                        "success": true,
+                        "msg": "Changes are persisted."
+                    });
+                });
+            }
+        ).catch(
+            (error) => {
                 return res.status(500).send({
                     "success": false,
                     "msg": "Unfortunatly something went wrong while updating the database."
                 });
-            } else {
-                return res.status(200).send({
-                    "success": true,
-                    "msg": "Here you are little boy, the database was updated."
-                });
             }
-        });
+        );
 };
 
 exports.unimplemented = function (req, res) {
