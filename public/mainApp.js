@@ -84,6 +84,8 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
         location.reload();
     }
     $scope.closeAddOperator = () => {
+        location.reload();
+
         document.getElementById("addOperator").style.display = "none";
     }
     $scope.aggiungiOperatore  = () => {
