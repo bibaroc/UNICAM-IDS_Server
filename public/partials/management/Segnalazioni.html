@@ -92,7 +92,7 @@
             <tbody>
               
                 <tr ng-repeat="temp in operator | filter:search">
-                    <td><input id="{{temp.idop}}opReporting" type="checkbox"  ng-click="setOperatoreSceltoPerSegnalazione(temp.idop)"></td>
+                    <td><input id="{{temp.idop}}opReporting" type="radio"  ng-click="setOperatoreSceltoPerSegnalazione(temp.idop)"></td>
                     <td>{{temp.idop}}</td>
                     <td>{{temp.nomeop}}</td>
                     <td>{{temp.cognomeop}}</td>

@@ -55,7 +55,7 @@
                     <tbody>
                       
                         <tr ng-repeat="temp in operator | filter:search">
-                            <td><input  id="{{temp.idop}}opRequest" type="checkbox" ng-click="setOperatoreScelto(temp.idop)"></td>
+                            <td><input  id="{{temp.idop}}opRequest" type="radio" ng-click="setOperatoreScelto(temp.idop)"></td>
                             <td>{{temp.idop}}</td>
                             <td>{{temp.nomeop}}</td>
                             <td>{{temp.cognomeop}}</td>
