@@ -18,7 +18,7 @@ exports.post = function (req, res) {
             "status": "Abilitato",
             "assigned_requests": [],
             "assigned_reportings": [],
-            "vlad_index": 1 + max_index
+            "vlad_index": max_index + 1
         });
 
         oper.save(function (errorSavingLocation) {
@@ -28,7 +28,7 @@ exports.post = function (req, res) {
                 return res.status(500).send({ "success": false, "msg": errorSavingLocation.message });
             } else {
 
-                max_index = max_index + 1;
+                max_index += max_index;
                 return res.status(201).send({
                     "success": true,
                     "msg": "Operator added successfuly.",
