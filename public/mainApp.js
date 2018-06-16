@@ -125,7 +125,7 @@ app.controller('operatoriCtrl', function ($scope, $location, $http) {
                     document.getElementById("lastName").value = "";
                     document.getElementById("resultAddingOperator").innerText = "Operazione eseguita con successo. L'operatore : "+nameFiltred+" "+lastnameFiltred+" è stato aggiunto con successo."+" L'id da fornire all'operatore è : "+ok.data.data.id + " , la password da utilizzare per loggarsi è operatore"+ok.data.data.id+".";
                 }, (notOk) =>{
-
+                    document.getElementById("resultAddingOperator").innerText = "Operazione non eseguita. C'è un problema nel sistema. Riprovare più tardi";
                 }
             )
 
