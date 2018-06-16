@@ -295,6 +295,14 @@ app.controller('segnalazioniCtrl', function ($scope, $location, $http) {
             }
             
         }
+        $scope.closeImage = () => {
+            document.getElementById("imageContainer").style.display = "none";
+          }
+        $scope.openImage = (Newsrc) => {
+            console.log(Newsrc);
+            document.getElementById("reportingImage").src = Newsrc;
+            document.getElementById("imageContainer").style.display = "table";
+        }
 });
 //CONTROLLER UTENTI
 app.controller('utentiCtrl', function ($scope, $location, $http) {
