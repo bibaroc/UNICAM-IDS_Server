@@ -156,9 +156,8 @@ app.controller('richiesteCtrl', function ($scope, $location, $http) {
                     $http.get("/api/request/" + response.data.data.ids[i]).then(
                         (res) => {
 
-                            let time = new Date(res.data.data.date);
+                            let time = new Date(res.data.data.preferred_date);
                             $scope.data.push({
-                                
                                 id: response.data.data.ids[i],
                                 name: res.data.data.name,
                                 data: time.toLocaleDateString(),
